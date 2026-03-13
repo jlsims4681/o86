@@ -79,6 +79,8 @@
                     <span>Notes</span>
                 </div>
             </div>
+   <a class="tr linux graphical cd modern opensource 32bit" href="?profile=android9" id="start_android9"><span>Android 9.0</span> <span>920 MB</span> <span><div class=gui_icon></div></span> <span>Linux</span> <span>32-bit</span> <span>Modern</span> <span>Open-source</span> <span>C++</span> <span>CD</span> <span>Pie - Custom Image</span></a>
+<a class="tr linux graphical cd modern opensource 32bit" href="?profile=android8" id="start_android8"><span>Android 8.1</span> <span>800 MB</span> <span><div class=gui_icon></div></span> <span>Linux</span> <span>32-bit</span> <span>Modern</span> <span>Open-source</span> <span>C++</span> <span>CD</span> <span>Oreo - Custom Image</span></a>         
 <a class="tr" href="?profile=android" id="start_android"><span>Android</span> <span>54+ MB</span> <span><div class=gui_icon></div></span> <span>Linux</span> <span>32-bit</span> <span>Modern</span> <span>Open-source</span> <span>C++</span> <span>CD</span> <span>Android x86 1.6-r2</span></a>
 <a class="tr" href="?profile=archlinux" id="start_archlinux"><span>Arch Linux</span> <span>15+ MB</span> <span><div class=tui_icon></div></span> <span>Linux</span> <span>32-bit</span> <span>Modern</span> <span>Open-source</span> <span>C</span> <span>9pfs</span> <span>Various packages, including Xorg, Firefox and more</span></a>
 <a class="tr" href="?profile=buildroot" id="start_buildroot"><span>Buildroot Linux</span> <span>4.9 MB</span> <span><div class=tui_icon></div></span> <span>Linux</span> <span>32-bit</span> <span>Modern</span> <span>Open-source</span> <span>C</span> <span>bzImage</span> <span>Minimal Linux with Lua, ping, curl, telnet</span></a>
@@ -428,3 +430,37 @@
 <a href="https://github.com/copy/v86">Project on Github</a>
 &mdash;
 <a href="https://github.com/copy/v86#compatibility">Compatibility</a>
+<div id="screen_container"></div>
+
+<script>
+window.addEventListener('load', function() {
+    const params = new URLSearchParams(window.location.search);
+    const profile = params.get('profile');
+
+    if (profile === 'android9' || profile === 'android8') {
+
+        window.stop(); 
+
+        const isoUrl = (profile === 'android9') 
+            ? "https://github.com/jlsims4681/newimages/releases/download/tag/android-x86_64-9.0-r2.iso
+"
+            : "https://github.com/jlsims4681/newimages/releases/download/tag/android-x86-8.1-r6.iso
+";
+
+        var emulator = new V86Starter({
+            wasm_path: "build/v86.wasm",
+            memory_size: 2048 * 1024 * 1024,
+            vga_memory_size: 64 * 1024 * 1024,
+            screen_container: document.getElementById("screen_container"),
+            bios: { url: "bios/seabios.bin" },
+            vga_bios: { url: "bios/vgabios.bin" },
+            cdrom: { url: isoUrl, async: true },
+            autostart: true
+        });
+
+     
+        const options = document.getElementById('boot_options');
+        if(options) options.style.display = 'none';
+    }
+});
+</script>
