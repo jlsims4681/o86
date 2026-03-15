@@ -441,31 +441,28 @@ window.addEventListener('load', function() {
     const profile = params.get('profile');
 
     if (profile === 'android9' || profile === 'android8') {
-        console.log("Android Profile Detected. Booting...");
+        
 
-        // Use your exact verified links
-        const isoUrl = (profile === 'android9') 
-            ? "https://github.com/jlsims4681/newimages/releases/download/tag/android-x86_64-9.0-r2.iso"
-            : "https://github.com/jlsims4681/newimages/releases/download/tag/android-x86-8.1-r6.iso";
+        const fileName = (profile === 'android9') 
+            ? "android-x86_64-9.0-r2.iso" 
+            : "android-x86-8.1-r6.iso";
 
-        // Delay execution by 1 second to prevent conflict with v86_all.js
-        setTimeout(function() {
-            window.emulator = new V86Starter({
-                wasm_path: "build/v86.wasm",
-                memory_size: 2048 * 1024 * 1024,
-                vga_memory_size: 64 * 1024 * 1024,
-                screen_container: document.getElementById("screen_container"),
-                // These MUST exist in your o86/bios/ folder
-                bios: { url: "bios/seabios.bin" },
-                vga_bios: { url: "bios/vgabios.bin" },
-                cdrom: { url: isoUrl, async: true },
-                autostart: true
-            });
+        const isoUrl = "https://cdn.jsdelivr.net/gh/jlsims4681/newimages@tag/" + fileName;
 
-            // Hide the list of OSes
-            const ui = document.getElementById('boot_options');
-            if (ui) ui.style.display = 'none';
-        }, 1000);
+        window.emulator = new V86Starter({
+            wasm_path: "build/v86.wasm",
+            memory_size: 2048 * 1024 * 1024,
+            vga_memory_size: 64 * 1024 * 1024,
+            screen_container: document.getElementById("screen_container"),
+            bios: { url: "bios/seabios.bin" },
+            vga_bios: { url: "bios/vgabios.bin" },
+            cdrom: { url: isoUrl, async: true }, // 'async: true' is critical for large ISOs
+            autostart: true
+        });
+
+        if (document.getElementById('boot_options')) {
+            document.getElementById('boot_options').style.display = 'none';
+        }
     }
 });
 </script>
